@@ -1,17 +1,22 @@
 # Chess Clock
+
 ![Chess Clock](/Screenshot%202025-04-01%20095122.png)
+
 This is a chess clock made by [Github](https://github.com/) User [Itz-Arindam26](https://github.com/Itz-Arindam26).
+
 ![Created on](https://img.shields.io/badge/Created%20on-01%20April%202025-brightgreen)
 ![Made By](https://img.shields.io/badge/Made%20by-Arindam_Samanta-blueviolet)
 ![Created At](https://img.shields.io/badge/Created%20At-01%20April%202025-skyblue)
 ![License](https://img.shields.io/badge/License-MIT-red)
 ![Released on](https://img.shields.io/badge/Released_On:-Github-yellow)
+
 ## File Description
 The file used here are as follows:
 - [Index](/index.html)![](https://img.shields.io/badge/File%20Type-HTML-red)
 - [Style](/style.css)![](https://img.shields.io/badge/File%20Type-CSS-brightgreen)
 - [Sass](/style.scss)![](https://img.shields.io/badge/File%20Type-SCSS-yellow)
 - [ReadMe](/README.md)![](https://img.shields.io/badge/File%20Type-MarkDown-blueviolet)
+
 ## User Manual For `Chess Clock`
 - $Step-1$: Clone the repository from github using on of the following way:
  ```
