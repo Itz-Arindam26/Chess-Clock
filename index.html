@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Clock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>Chess Clock</h1>
+        </nav>
+    </header>
+    <main>
+        <div class="par">
+            <div id="cont1">
+                <div id="cont1_1">
+                    <span id="wt_hr">00</span>:<span id="wt_mt">00</span>:<span id="wt_sc">00</span>
+                </div>
+                <div id="cont1_2">
+                    <span id="bl_hr">00</span>:<span id="bl_mt">00</span>:<span id="bl_sc">00</span>
+                </div>
+            </div>
+            <div id="cont2">
+                <button id="st">Start</button>
+                <button id="so">Stop</button>
+                <button id="re">Reset</button>
+            </div>
+        </div>
+        <div class="par2">
+            <button id="wt">Set time for Players</button>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let wtHr = document.getElementById("wt_hr");
+            let wtMt = document.getElementById("wt_mt");
+            let wtSc = document.getElementById("wt_sc");
+
+            let blHr = document.getElementById("bl_hr");
+            let blMt = document.getElementById("bl_mt");
+            let blSc = document.getElementById("bl_sc");
+
+            let startBtn = document.getElementById("st");
+            let stopBtn = document.getElementById("so");
+            let resetBtn = document.getElementById("re");
+            let setTimeBtn = document.getElementById("wt");
+
+            let activeTimer = null;
+            let interval = null;
+            let whiteTime = { hr: 0, mt: 0, sc: 0 };
+            let blackTime = { hr: 0, mt: 0, sc: 0 };
+
+            // Function to update the display for a player
+            function updateDisplay(player) {
+                let time = player === "white" ? whiteTime : blackTime;
+                let hrElem = player === "white" ? wtHr : blHr;
+                let mtElem = player === "white" ? wtMt : blMt;
+                let scElem = player === "white" ? wtSc : blSc;
+
+                hrElem.textContent = String(time.hr).padStart(2, "0");
+                mtElem.textContent = String(time.mt).padStart(2, "0");
+                scElem.textContent = String(time.sc).padStart(2, "0");
+            }
+
+            // Function to decrement the timer for the active player
+            function decrementTime(player) {
+                let time = player === "white" ? whiteTime : blackTime;
+
+                if (time.sc > 0) {
+                    time.sc--;
+                }
+                else if (time.mt > 0) {
+                    time.sc = 59;
+                    time.mt--;
+                }
+                else if (time.hr > 0) {
+                    time.sc = 59;
+                    time.mt = 59;
+                    time.hr--;
+                }
+                else {
+                    clearInterval(interval);
+                    alert(`${player.charAt(0).toUpperCase() + player.slice(1)} player ran out of time!`);
+                    return;
+                }
+
+                updateDisplay(player);
+            }
+
+            // Function to switch timers between players
+            function switchTimer() {
+                clearInterval(interval);
+                activeTimer = activeTimer === "white" ? "black" : "white";
+                startTimer();
+            }
+
+            // Start the timer for the active player
+            function startTimer() {
+                interval = setInterval(() => decrementTime(activeTimer), 1000);
+            }
+
+            // Button event listeners
+            startBtn.addEventListener("click", () => {
+                if (!activeTimer) activeTimer = "white"; // Default to white if no active player
+                startTimer();
+                stopBtn.style.display = 'block';
+                resetBtn.style.display = 'block';
+                startBtn.style.display = 'none';
+            });
+            
+            stopBtn.addEventListener("click", () => {
+                resetBtn.style.display = 'block';
+                startBtn.style.display = 'block';
+                stopBtn.style.display = 'none';
+                clearInterval(interval);
+            });
+            
+            resetBtn.addEventListener("click", () => {
+                resetBtn.style.display = 'none';
+                stopBtn.style.display = 'none';
+                startBtn.style.display = 'block';
+                clearInterval(interval);
+                whiteTime = { hr: 0, mt: 0, sc: 0 };
+                blackTime = { hr: 0, mt: 0, sc: 0 };
+                updateDisplay("white");
+                updateDisplay("black");
+                activeTimer = null;
+            });
+
+            setTimeBtn.addEventListener("click", () => {
+                let timeInput = prompt("Enter time in HH:MM:SS format (e.g., 01:30:00):");
+                if (timeInput) {
+                    let [hr, mt, sc] = timeInput.split(":").map(Number);
+                    whiteTime = { hr, mt, sc };
+                    blackTime = { hr, mt, sc };
+                    updateDisplay("white");
+                    updateDisplay("black");
+                }
+            });
+
+            // Add event listeners to timer containers for player taps
+            document.getElementById("cont1_1").addEventListener("click", () => {
+                if (activeTimer === "white") {
+                    switchTimer(); // Switch to black timer
+                }
+            });
+
+            document.getElementById("cont1_2").addEventListener("click", () => {
+                if (activeTimer === "black") {
+                    switchTimer(); // Switch to white timer
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
